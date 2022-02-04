@@ -56,13 +56,26 @@ COPY mujoco-py/vendor/10_nvidia.json /usr/share/glvnd/egl_vendor.d/10_nvidia.jso
 WORKDIR /mujoco_py
 # Copy over just requirements.txt at first. That way, the Docker cache doesn't
 # expire until we actually change the requirements.
-COPY ./mujoco-py/requirements.txt /mujoco_py/
-COPY ./mujoco-py/requirements.dev.txt /mujoco_py/
-RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir -r requirements.dev.txt
+# COPY ./mujoco-py/requirements.txt /mujoco_py/
+# COPY ./mujoco-py/requirements.dev.txt /mujoco_py/
+# RUN pip install --no-cache-dir -r requirements.txt
+# RUN pip install --no-cache-dir -r requirements.dev.txt
 
+RUN wget -P /opt https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
+    bash /opt/Miniconda3-latest-Linux-x86_64.sh -b && \
+    rm /opt/Miniconda3-latest-Linux-x86_64.sh && \
+    ~/miniconda3/bin/conda init bash && \
+    . ~/.bashrc
+ADD ./gym/conda_env.yml /tmp/conda_env.yml
+RUN ~/miniconda3/bin/conda env create -f /tmp/conda_env.yml
+RUN echo "conda activate decision-transformer-gym" >> ~/.bashrc
+
+WORKDIR /mujoco_py
 # Delay moving in the entire code until the very end.
 ENTRYPOINT ["/mujoco_py/vendor/Xdummy-entrypoint"]
 # CMD ["pytest"]
 COPY ./mujoco-py/ /mujoco_py
-RUN python setup.py install
+# RUN python setup.py install
+RUN ~/miniconda3/envs/decision-transformer-gym/bin/python setup.py install
+
+WORKDIR /workspace
