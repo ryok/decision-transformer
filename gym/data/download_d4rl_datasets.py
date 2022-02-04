@@ -9,10 +9,13 @@ import d4rl
 
 datasets = []
 
-for env_name in ['halfcheetah', 'hopper', 'walker2d']:
+for env_name in ['hopper', 'walker2d']: #'halfcheetah', 
 	for dataset_type in ['medium', 'medium-replay', 'expert']:
 		name = f'{env_name}-{dataset_type}-v2'
+		print(name)
 		env = gym.make(name)
+		env.reset()
+		env.step(env.action_space.sample())
 		dataset = env.get_dataset()
 
 		N = dataset['rewards'].shape[0]
