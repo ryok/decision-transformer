@@ -75,7 +75,6 @@ WORKDIR /mujoco_py
 ENTRYPOINT ["/mujoco_py/vendor/Xdummy-entrypoint"]
 # CMD ["pytest"]
 COPY ./mujoco-py/ /mujoco_py
-# RUN python setup.py install
 RUN ~/miniconda3/envs/decision-transformer-gym/bin/python setup.py install
 
 WORKDIR /workspace
