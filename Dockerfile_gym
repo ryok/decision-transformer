@@ -70,6 +70,13 @@ ADD ./gym/conda_env.yml /tmp/conda_env.yml
 RUN ~/miniconda3/bin/conda env create -f /tmp/conda_env.yml
 RUN echo "conda activate decision-transformer-gym" >> ~/.bashrc
 
+# d4rl
+WORKDIR /
+RUN git clone https://github.com/ryok/d4rl.git
+WORKDIR /d4rl
+RUN ~/miniconda3/envs/decision-transformer-gym/bin/pip install -e .
+RUN ~/miniconda3/envs/decision-transformer-gym/bin/pip install dm-control==0.0.423341706
+
 WORKDIR /mujoco_py
 # Delay moving in the entire code until the very end.
 ENTRYPOINT ["/mujoco_py/vendor/Xdummy-entrypoint"]
