@@ -1,7 +1,3 @@
-# We need the CUDA base dockerfile to enable GPU rendering
-# on hosts with GPUs.
-# The image below is a pinned version of nvidia/cuda:9.1-cudnn7-devel-ubuntu16.04 (from Jan 2018)
-# If updating the base image, be sure to test on GPU since it has broken in the past.
 FROM nvidia/cuda:10.2-cudnn8-devel-ubuntu18.04
 
 RUN apt-get update -q \
